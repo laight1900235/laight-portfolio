@@ -11,6 +11,7 @@ const skillData = [
     { subject: 'オフィスIT', A: 50, fullMark: 100, note: "社内SEとしてのサポート経験" },
     { subject: 'ネットワーク', A: 50, fullMark: 100, note: "基礎的な構築・保守" },
     { subject: '現場機器配線', A: 30, fullMark: 100, note: "PLC制御、SBC連携など（※専門パートナーと協業）" },
+    { subject: 'MS Office', A: 30, fullMark: 100, note: "Excel等（データ処理・VBAマクロなど）" },
 ]
 
 export default function Skills() {
@@ -39,13 +40,13 @@ export default function Skills() {
                     >
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(250,204,21,0.1)_0%,transparent_70%)] pointer-events-none" />
                         <ResponsiveContainer width="100%" height="100%">
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={skillData}>
+                            <RadarChart cx="50%" cy="50%" outerRadius="55%" data={skillData}>
                                 <PolarGrid stroke="#333" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#aaa', fontSize: 12 }} />
+                                <PolarAngleAxis dataKey="subject" tick={{ fill: '#aaa', fontSize: 10 }} />
                                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                                 <Tooltip
                                     formatter={(value, name, props) => [props.payload.note, '補足']}
-                                    contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', color: '#fff' }}
+                                    contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
                                 />
                                 <Radar name="Skills" dataKey="A" stroke="#facc15" fill="#facc15" fillOpacity={0.4} />
                             </RadarChart>
