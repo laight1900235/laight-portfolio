@@ -78,7 +78,10 @@ export default function Profile() {
                             className="relative group"
                         >
                             {/* Timeline dot */}
-                            <div className="absolute -left-[45px] md:-left-[61px] top-1 w-6 h-6 bg-surface border-4 border-gray-800 rounded-full group-hover:border-primary shadow-[0_0_10px_rgba(59,130,246,0)] group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all duration-300 z-10" />
+                            <div className="absolute -left-[45px] md:-left-[61px] top-1 z-10 flex items-center justify-center">
+                                <div className="absolute w-6 h-6 bg-primary/40 rounded-full group-hover:animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="relative w-6 h-6 bg-surface border-4 border-gray-800 rounded-full group-hover:border-primary shadow-[0_0_10px_rgba(59,130,246,0)] group-hover:shadow-[0_0_15px_rgba(59,130,246,0.8)] transition-all duration-300" />
+                            </div>
 
                             <div className={`bg-gradient-to-br ${item.color} p-6 md:p-8 rounded-2xl border border-gray-800/50 hover:border-gray-600 transition-colors shadow-lg`}>
                                 <div className="flex items-center gap-4 mb-4">

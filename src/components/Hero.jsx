@@ -5,9 +5,35 @@ import { Factory, Cpu, Network } from 'lucide-react'
 export default function Hero() {
     return (
         <section className="relative h-screen flex items-center justify-center overflow-hidden bg-background">
-            {/* Dynamic Animated Grid Background */}
+            {/* Dynamic Animated Grid & Particles Background */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" />
+
+                {/* Floating Particles */}
+                {Array.from({ length: 24 }).map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute w-1.5 h-1.5 bg-primary/40 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]"
+                        initial={{
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            opacity: 0,
+                            scale: 0
+                        }}
+                        animate={{
+                            y: [0, -100, -200],
+                            x: [0, Math.random() * 50 - 25, Math.random() * 50 - 25],
+                            opacity: [0, 1, 0],
+                            scale: [0, 1.5, 0]
+                        }}
+                        transition={{
+                            duration: Math.random() * 10 + 10,
+                            repeat: Infinity,
+                            ease: "linear",
+                            delay: Math.random() * 10
+                        }}
+                    />
+                ))}
             </div>
 
             {/* Floating abstract elements representing data/network */}
@@ -44,13 +70,22 @@ export default function Hero() {
                 </motion.div>
 
                 <motion.h2
-                    className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 mb-6 leading-tight"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 mb-6 leading-tight flex flex-col gap-2 md:gap-4"
                 >
-                    工場の機械から、<br className="hidden md:block" />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent glow-text">最新のローカルAI</span>まで。
+                    <motion.span
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                        工場の機械から、
+                    </motion.span>
+                    <motion.span
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                    >
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent glow-text">最新のローカルAI</span>まで。
+                    </motion.span>
                 </motion.h2>
 
                 <motion.p

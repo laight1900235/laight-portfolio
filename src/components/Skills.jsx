@@ -74,10 +74,13 @@ export default function Skills() {
                                             <span className="text-gray-300 font-medium">{skill.subject}</span>
                                             <span className="text-gray-500 font-mono text-sm">{skill.A}%</span>
                                         </div>
-                                        <div className="w-full bg-gray-800 rounded-full h-2">
-                                            <div
+                                        <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                                            <motion.div
                                                 className={`h-2 rounded-full ${skill.A >= 80 ? 'bg-primary' : skill.A >= 60 ? 'bg-secondary' : 'bg-gray-500'}`}
-                                                style={{ width: `${skill.A}%` }}
+                                                initial={{ width: 0 }}
+                                                whileInView={{ width: `${skill.A}%` }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 1, delay: idx * 0.1, ease: "easeOut" }}
                                             />
                                         </div>
 
