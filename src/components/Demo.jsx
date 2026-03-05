@@ -30,7 +30,7 @@ const generateDummyData = () => {
 const webAppExamples = [
     {
         icon: <Camera className="w-8 h-8 text-secondary" />,
-        title: "安価な監視カメラ AI物体検知",
+        title: <><span className="inline-block">安価な監視カメラ</span> <span className="inline-block">AI物体検知</span></>,
         desc: "Raspberry Piなど数千円の基板とカメラで、異常停止を画像検知してLINE等へ通知。",
         mockup: (
             <div className="flex flex-col h-full gap-2">
@@ -48,7 +48,7 @@ const webAppExamples = [
     },
     {
         icon: <ClipboardList className="w-8 h-8 text-primary" />,
-        title: "リアルタイム工程管理",
+        title: <><span className="inline-block">リアルタイム</span><span className="inline-block">工程管理</span></>,
         desc: "ホワイトボードの予定表を大型モニターへ。各機械の現在の加工品名や進捗がひと目でわかります。",
         mockup: (
             <div className="flex flex-col h-full bg-gray-900 rounded-lg overflow-hidden border border-gray-700">
@@ -73,7 +73,7 @@ const webAppExamples = [
     },
     {
         icon: <ScrollText className="w-8 h-8 text-accent" />,
-        title: "紙ベース脱却！図面ビューワー",
+        title: <><span className="inline-block">紙ベース脱却！</span><span className="inline-block">図面ビューワー</span></>,
         desc: "油で汚れた紙図面から卒業。タブレットから常に最新図面を引き出し、現場で指先一つで拡大確認。",
         mockup: (
             <div className="w-full h-full bg-gray-800 rounded-lg p-2 relative overflow-hidden border border-gray-700 flex flex-col items-center justify-center">
@@ -88,7 +88,7 @@ const webAppExamples = [
     },
     {
         icon: <MessagesSquare className="w-8 h-8 text-pink-500" />,
-        title: "現場と事務所の連携チャット",
+        title: <><span className="inline-block">現場と事務所の</span><span className="inline-block">連携チャット</span></>,
         desc: "「この図面のここは？」チャット感覚で事務所と現場を繋ぎ、歩く手間と確認漏れを無くす専用ツール。",
         mockup: (
             <div className="flex flex-col h-full gap-2">
