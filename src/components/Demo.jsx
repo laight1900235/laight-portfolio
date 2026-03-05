@@ -51,16 +51,21 @@ const webAppExamples = [
         title: "リアルタイム工程管理",
         desc: "ホワイトボードの予定表を大型モニターへ。各機械の現在の加工品名や進捗がひと目でわかります。",
         mockup: (
-            <div className="flex flex-col gap-2 h-full">
-                <div className="flex justify-between text-[10px] text-gray-400 border-b border-gray-700 pb-1">
-                    <span>設備名</span><span>進捗</span>
+            <div className="flex flex-col h-full bg-gray-900 rounded-lg overflow-hidden border border-gray-700">
+                <div className="grid grid-cols-3 bg-gray-800 text-[9px] text-gray-400 p-1.5 border-b border-gray-700 font-bold">
+                    <div className="text-center">設備</div>
+                    <div className="text-center">図面番/品名</div>
+                    <div className="text-center">状況</div>
                 </div>
-                {[1, 2, 3].map(i => (
-                    <div key={i} className="flex flex-col gap-1">
-                        <div className="flex justify-between text-[10px] text-gray-300">
-                            <span>MC-0{i}</span><span className="text-primary">{i * 30}%</span>
-                        </div>
-                        <div className="w-full bg-gray-800 rounded-full h-1.5"><div className="bg-primary h-1.5 rounded-full" style={{ width: `${i * 30}%` }}></div></div>
+                {[
+                    { m: "MC-01", p: "ブラケットA", s: "稼働中", c: "text-[#10b981]" },
+                    { m: "MC-02", p: "ベース板", s: "段取中", c: "text-secondary" },
+                    { m: "NC-05", p: "フランジB", s: "待機", c: "text-primary" }
+                ].map((row, i) => (
+                    <div key={i} className="grid grid-cols-3 text-[9px] p-1.5 border-b border-gray-800/50 items-center">
+                        <div className="text-gray-300 text-center font-mono">{row.m}</div>
+                        <div className="text-gray-400 text-center truncate px-1">{row.p}</div>
+                        <div className={`text-center font-bold px-1 py-0.5 rounded bg-gray-800 mx-auto ${row.c}`}>{row.s}</div>
                     </div>
                 ))}
             </div>
@@ -161,8 +166,8 @@ export default function Demo() {
                             onClick={handleFetchData}
                             disabled={isFetching}
                             className={`px-8 py-3 rounded-lg font-semibold flex items-center gap-2 transition-all duration-300 relative ${isFetching
-                                    ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                    : 'bg-primary hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] text-white group outline-none'
+                                ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                                : 'bg-primary hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] text-white group outline-none'
                                 }`}
                         >
                             {isFetching ? (
@@ -255,9 +260,9 @@ export default function Demo() {
                                         </div>
                                     </div>
 
-                                    <div className="h-[300px] w-full mt-8 bg-surface/30 rounded-xl p-4 border border-gray-800">
+                                    <div className="h-[250px] sm:h-[300px] w-full mt-8 bg-surface/30 rounded-xl p-2 sm:p-4 border border-gray-800 overflow-hidden">
                                         <ResponsiveContainer width="100%" height="100%">
-                                            <AreaChart data={data}>
+                                            <AreaChart data={data} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                                                 <defs>
                                                     <linearGradient id="colorLoad" x1="0" y1="0" x2="0" y2="1">
                                                         <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
@@ -265,8 +270,8 @@ export default function Demo() {
                                                     </linearGradient>
                                                 </defs>
                                                 <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                                                <XAxis dataKey="time" stroke="#666" tick={{ fill: '#666' }} tickLine={false} axisLine={false} />
-                                                <YAxis stroke="#666" tick={{ fill: '#666' }} tickLine={false} axisLine={false} domain={[0, 150]} />
+                                                <XAxis dataKey="time" stroke="#666" tick={{ fill: '#666', fontSize: 12 }} tickLine={false} axisLine={false} />
+                                                <YAxis stroke="#666" tick={{ fill: '#666', fontSize: 12 }} tickLine={false} axisLine={false} domain={[0, 150]} width={40} />
                                                 <ChartTooltip
                                                     contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '8px', color: '#fff' }}
                                                     itemStyle={{ color: '#fff' }}

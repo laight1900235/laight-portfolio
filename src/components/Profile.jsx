@@ -44,21 +44,25 @@ export default function Profile() {
                     <div className="w-24 h-1 bg-gradient-to-r from-accent to-emerald-500 mx-auto rounded-full mb-8" />
 
                     <div className="bg-surface/50 border border-gray-800 rounded-2xl p-8 mb-12 backdrop-blur-sm max-w-2xl mx-auto shadow-xl">
-                        <h3 className="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2">
-                            個人事業主 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Laight</span>（ライト）
+                        <h3 className="flex flex-col items-center justify-center gap-1 mb-6">
+                            <span className="text-gray-400 text-sm font-medium">個人事業主</span>
+                            <span className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent py-1">Laight</span>
+                            <span className="text-gray-400 text-sm font-medium">（ライト）</span>
                         </h3>
                         <p className="text-gray-300 leading-relaxed mb-6">
                             屋号には、ローカルな「<strong>AI</strong>」運用が得意であることと、モノづくりの現場に「<strong>光（light）</strong>」を当てることで課題を解決するという意味を込めています。
                         </p>
 
-                        <a
-                            href="mailto:n.yamada@laight.net"
-                            className="inline-flex items-center gap-3 px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-all group border border-gray-600 hover:border-primary shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
-                        >
-                            <Mail className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
-                            <span className="font-mono">n.yamada@laight.net</span>
-                            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-white ml-2" />
-                        </a>
+                        <div className="flex justify-center w-full">
+                            <a
+                                href="mailto:n.yamada@laight.net"
+                                className="inline-flex items-center justify-center gap-2 md:gap-3 px-4 md:px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-all group border border-gray-600 hover:border-primary shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] max-w-full"
+                            >
+                                <Mail className="w-4 h-4 md:w-5 md:h-5 text-primary group-hover:scale-110 transition-transform flex-shrink-0" />
+                                <span className="font-mono text-sm md:text-base break-all">n.yamada@laight.net</span>
+                                <ExternalLink className="w-3 h-3 md:w-4 md:h-4 text-gray-400 group-hover:text-white flex-shrink-0" />
+                            </a>
+                        </div>
                     </div>
 
                 </motion.div>

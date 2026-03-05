@@ -4,13 +4,13 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Responsi
 import { AlertCircle } from 'lucide-react'
 
 const skillData = [
-    { subject: 'AI関係', A: 100, fullMark: 100, note: "物体検知、LLMのローカル環境構築など" },
-    { subject: 'WEB・アプリ', A: 80, fullMark: 100, note: "データの見える化ダッシュボード実装など" },
-    { subject: 'サーバー', A: 80, fullMark: 100, note: "データセンターでの実務経験あり" },
-    { subject: 'DB構築設計', A: 60, fullMark: 100, note: "構築・管理・設計" },
-    { subject: 'オフィスIT', A: 60, fullMark: 100, note: "社内SEとしてのサポート経験" },
-    { subject: 'ネットワーク', A: 60, fullMark: 100, note: "基礎的な構築・保守" },
-    { subject: '現場機器配線', A: 40, fullMark: 100, note: "PLC制御、SBC連携など（※専門パートナーと協業）" },
+    { subject: 'AI関係', A: 90, fullMark: 100, note: "物体検知、LLMのローカル環境構築など" },
+    { subject: 'WEB・アプリ', A: 70, fullMark: 100, note: "データの見える化ダッシュボード実装など" },
+    { subject: 'サーバー', A: 70, fullMark: 100, note: "データセンターでの実務経験あり" },
+    { subject: 'DB構築設計', A: 50, fullMark: 100, note: "構築・管理・設計" },
+    { subject: 'オフィスIT', A: 50, fullMark: 100, note: "社内SEとしてのサポート経験" },
+    { subject: 'ネットワーク', A: 50, fullMark: 100, note: "基礎的な構築・保守" },
+    { subject: '現場機器配線', A: 30, fullMark: 100, note: "PLC制御、SBC連携など（※専門パートナーと協業）" },
 ]
 
 export default function Skills() {
