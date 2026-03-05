@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Briefcase, Factory, Code, Server, CheckCircle2 } from 'lucide-react'
+import { Briefcase, Factory, Code, Server, CheckCircle2, Mail, ExternalLink } from 'lucide-react'
 
 const timeline = [
     {
@@ -31,7 +31,7 @@ const timeline = [
 
 export default function Profile() {
     return (
-        <section id="profile" className="py-24 bg-background relative z-10">
+        <section id="profile" className="py-24 bg-background relative z-10 border-t border-gray-800">
             <div className="max-w-4xl mx-auto px-6">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -42,7 +42,25 @@ export default function Profile() {
                     <span className="text-accent font-mono tracking-widest text-sm mb-2 block">PROFILE</span>
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">代表・山田 直輝</h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-accent to-emerald-500 mx-auto rounded-full mb-8" />
-                    <p className="text-xl text-gray-300 font-medium">現場に光(light)を当て、ローカルAIの力で課題を解決する。</p>
+
+                    <div className="bg-surface/50 border border-gray-800 rounded-2xl p-8 mb-12 backdrop-blur-sm max-w-2xl mx-auto shadow-xl">
+                        <h3 className="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2">
+                            個人事業主 <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Laight</span>（ライト）
+                        </h3>
+                        <p className="text-gray-300 leading-relaxed mb-6">
+                            屋号には、ローカルな「<strong>AI</strong>」運用が得意であることと、モノづくりの現場に「<strong>光（light）</strong>」を当てることで課題を解決するという意味を込めています。
+                        </p>
+
+                        <a
+                            href="mailto:n.yamada@laight.net"
+                            className="inline-flex items-center gap-3 px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-all group border border-gray-600 hover:border-primary shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                        >
+                            <Mail className="w-5 h-5 text-primary group-hover:scale-110 transition-transform" />
+                            <span className="font-mono">n.yamada@laight.net</span>
+                            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-white ml-2" />
+                        </a>
+                    </div>
+
                 </motion.div>
 
                 <div className="relative border-l border-gray-800 ml-4 md:ml-12 pl-8 md:pl-12 space-y-12">
