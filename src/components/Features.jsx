@@ -1,30 +1,6 @@
-import React, { useRef, useEffect } from 'react'
-import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion'
+import React from 'react'
+import { motion } from 'framer-motion'
 import { Wrench, ShieldCheck, ServerCog, Landmark } from 'lucide-react'
-
-function StatItem({ value, label, suffix = "" }) {
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, margin: "-50px" })
-    const count = useMotionValue(0)
-    const rounded = useTransform(count, (latest) => Math.round(latest))
-
-    useEffect(() => {
-        if (isInView) {
-            animate(count, value, { duration: 2.5, ease: "easeOut" })
-        }
-    }, [isInView, value, count])
-
-    return (
-        <div ref={ref} className="text-center p-6 bg-surface/30 border border-gray-800 rounded-2xl relative overflow-hidden group shadow-lg">
-            <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
-            <h4 className="text-3xl md:text-5xl font-extrabold text-primary mb-2 font-mono flex justify-center items-end gap-1">
-                <motion.span>{rounded}</motion.span>
-                {suffix && <span className="text-xl md:text-2xl mb-1">{suffix}</span>}
-            </h4>
-            <p className="text-gray-400 text-sm font-medium">{label}</p>
-        </div>
-    )
-}
 
 const features = [
     {
@@ -64,13 +40,6 @@ export default function Features() {
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Laightができること</h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-primary to-pink-500 mx-auto rounded-full" />
                 </motion.div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-                    <StatItem value={50} label="対応可能な設備メーカー" suffix="社+" />
-                    <StatItem value={100} label="現場目線での提案" suffix="%" />
-                    <StatItem value={24} label="安心の運用サポート" suffix="H" />
-                    <StatItem value={365} label="製造業の課題解決" suffix="日" />
-                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {features.map((feature, index) => (

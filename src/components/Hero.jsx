@@ -70,22 +70,13 @@ export default function Hero() {
                 </motion.div>
 
                 <motion.h2
-                    className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 mb-6 leading-tight flex flex-col gap-2 md:gap-4"
+                    className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 mb-6 leading-tight"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    <motion.span
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        工場の機械から、
-                    </motion.span>
-                    <motion.span
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                    >
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent glow-text">最新のローカルAI</span>まで。
-                    </motion.span>
+                    工場の機械から、<br className="hidden md:block" />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent glow-text">最新のローカルAI</span>まで。
                 </motion.h2>
 
                 <motion.p
