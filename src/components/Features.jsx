@@ -6,7 +6,7 @@ const features = [
     {
         icon: <Wrench className="w-8 h-8 text-primary" />,
         title: '現場とITの架け橋（DX化支援）',
-        description: '搬送装置や加工装置のPLC配線、SBC（シングルボードコンピュータ）でのデータ受け取りなど、泥臭い現場作業から対応可能。古い設備でも見放しません。'
+        description: '搬送装置や加工装置のPLC配線、SBC（シングルボードコンピュータ）でのデータ受け取りなど、実機に直接触れる現場作業にも対応可能。古い設備でも見放しません。'
     },
     {
         icon: <ShieldCheck className="w-8 h-8 text-secondary" />,
