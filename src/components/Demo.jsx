@@ -1,17 +1,28 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as ChartTooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
-import { DatabaseZap, Activity, Loader2, Target, Thermometer, ScrollText, Radio, Camera, ClipboardList, MessagesSquare } from 'lucide-react'
+import { DatabaseZap, Activity, Loader2, Target, Gauge, ScrollText, PlayCircle, Camera, ClipboardList, MessagesSquare, AlertTriangle } from 'lucide-react'
 
-// Dummy Data Generator for Machining Center
+// Dummy Data Generator for Machining Center (Spindle Load & Status)
 const generateDummyData = () => {
     const data = []
+    let timeObj = new Date();
+    timeObj.setHours(10, 0, 0, 0);
+
     for (let i = 0; i < 20; i++) {
+        // Simulate a machining cycle: idle -> high load -> idle -> high load
+        let load = 0;
+        if (i > 2 && i < 8) load = Math.floor(Math.random() * 30) + 70; // 70-100% active cut
+        else if (i === 8) load = 120; // Peak load
+        else if (i > 12 && i < 18) load = Math.floor(Math.random() * 20) + 60; // 60-80% active cut
+        else load = Math.floor(Math.random() * 5); // 0-5% idle
+
         data.push({
-            time: `10:${i.toString().padStart(2, '0')}`,
-            主軸回転数: Math.floor(Math.random() * 500) + 4000, // 4000-4500 rpm
-            主軸温度: Math.floor(Math.random() * 10) + 60,   // 60-70度
+            time: timeObj.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' }),
+            主軸負荷: load,
+            アラーム: load > 110 ? 1 : 0 // Peak triggers an alarm line visually
         })
+        timeObj.setMinutes(timeObj.getMinutes() + 1);
     }
     return data
 }
@@ -20,22 +31,74 @@ const webAppExamples = [
     {
         icon: <Camera className="w-8 h-8 text-secondary" />,
         title: "安価な監視カメラ AI物体検知",
-        desc: "Raspberry Piなど数千円の基板とカメラで、切粉の詰まりや異常停止を画像検知して即座にLINE等へ通知。"
+        desc: "Raspberry Piなど数千円の基板とカメラで、異常停止を画像検知してLINE等へ通知。",
+        mockup: (
+            <div className="flex flex-col h-full gap-2">
+                <div className="w-full h-24 bg-gray-800 rounded-lg relative overflow-hidden flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')]"></div>
+                    <div className="w-16 h-16 border-2 border-red-500/50 rounded-lg absolute left-1/4 top-1/2 -translate-y-1/2 flex items-start p-1">
+                        <span className="text-[8px] text-red-500 font-mono bg-red-500/10 px-1">切粉検知: 98%</span>
+                    </div>
+                </div>
+                <div className="flex bg-[#00B900]/20 text-[#00B900] text-xs p-2 rounded-md items-center gap-2">
+                    <AlertTriangle className="w-3 h-3" /> 異常停止を検知しました
+                </div>
+            </div>
+        )
     },
     {
         icon: <ClipboardList className="w-8 h-8 text-primary" />,
-        title: "リアルタイム工程管理ダッシュボード",
-        desc: "ホワイトボードの予定表を大型モニターへ。各機械の現在の加工品名や進捗がひと目でわかります。"
+        title: "リアルタイム工程管理",
+        desc: "ホワイトボードの予定表を大型モニターへ。各機械の現在の加工品名や進捗がひと目でわかります。",
+        mockup: (
+            <div className="flex flex-col gap-2 h-full">
+                <div className="flex justify-between text-[10px] text-gray-400 border-b border-gray-700 pb-1">
+                    <span>設備名</span><span>進捗</span>
+                </div>
+                {[1, 2, 3].map(i => (
+                    <div key={i} className="flex flex-col gap-1">
+                        <div className="flex justify-between text-[10px] text-gray-300">
+                            <span>MC-0{i}</span><span className="text-primary">{i * 30}%</span>
+                        </div>
+                        <div className="w-full bg-gray-800 rounded-full h-1.5"><div className="bg-primary h-1.5 rounded-full" style={{ width: `${i * 30}%` }}></div></div>
+                    </div>
+                ))}
+            </div>
+        )
     },
     {
         icon: <ScrollText className="w-8 h-8 text-accent" />,
         title: "紙ベース脱却！図面ビューワー",
-        desc: "油で汚れた紙図面から卒業。タブレットから常に最新図面を引き出し、現場で確認できる専用アプリ。"
+        desc: "油で汚れた紙図面から卒業。タブレットから常に最新図面を引き出し、現場で指先一つで拡大確認。",
+        mockup: (
+            <div className="w-full h-full bg-gray-800 rounded-lg p-2 relative overflow-hidden border border-gray-700 flex flex-col items-center justify-center">
+                <div className="w-full h-full border border-accent/30 bg-accent/5 rounded flex items-center justify-center relative">
+                    <div className="w-16 h-[1px] bg-accent/40 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                    <div className="w-[1px] h-16 bg-accent/40 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                    <div className="w-12 h-12 border border-accent/40 rounded-full"></div>
+                    <div className="absolute bottom-1 right-1 bg-accent text-white text-[8px] px-1 rounded">200% ▼</div>
+                </div>
+            </div>
+        )
     },
     {
         icon: <MessagesSquare className="w-8 h-8 text-pink-500" />,
-        title: "現場と事務所の意思疎通アプリ",
-        desc: "「この図面のここは？」チャット感覚で事務所と現場を繋ぎ、歩く手間と確認漏れを無くす専用ツール。"
+        title: "現場と事務所の連携チャット",
+        desc: "「この図面のここは？」チャット感覚で事務所と現場を繋ぎ、歩く手間と確認漏れを無くす専用ツール。",
+        mockup: (
+            <div className="flex flex-col h-full gap-2">
+                <div className="bg-gray-800 rounded-lg p-2 text-[10px] text-gray-300 w-3/4 self-start relative">
+                    MC3号機のA寸法、図面公差きついですが調整しますか？
+                </div>
+                <div className="bg-pink-500/20 text-pink-100 border border-pink-500/30 rounded-lg p-2 text-[10px] w-3/4 self-end text-right">
+                    確認しました！+0.05まで許容でOKです。
+                </div>
+                <div className="mt-auto flex gap-1">
+                    <div className="h-4 bg-gray-800 rounded-full flex-grow"></div>
+                    <div className="w-4 h-4 rounded-full bg-pink-500/50"></div>
+                </div>
+            </div>
+        )
     }
 ]
 
@@ -43,7 +106,7 @@ export default function Demo() {
     const [isFetching, setIsFetching] = useState(false)
     const [dataLoaded, setDataLoaded] = useState(false)
     const [data, setData] = useState([])
-    const [animatedOee, setAnimatedOee] = useState(0)
+    const [animatedLoad, setAnimatedLoad] = useState(0)
     const [showTooltip, setShowTooltip] = useState(false)
 
     const handleFetchData = () => {
@@ -52,21 +115,19 @@ export default function Demo() {
         setData([])
         setShowTooltip(false)
 
-        // Simulate network delay and data processing
         setTimeout(() => {
             setData(generateDummyData())
             setIsFetching(false)
             setDataLoaded(true)
 
-            // Count up animation for KPI
             let count = 0
-            const target = 92
+            const target = 85 // 表示用の瞬間主軸負荷
             const interval = setInterval(() => {
-                count += 2
-                setAnimatedOee(count > target ? target : count)
+                count += 3
+                setAnimatedLoad(count > target ? target : count)
                 if (count >= target) {
                     clearInterval(interval)
-                    setTimeout(() => setShowTooltip(true), 1000)
+                    setTimeout(() => setShowTooltip(true), 800)
                 }
             }, 30)
         }, 2000)
@@ -82,19 +143,18 @@ export default function Demo() {
                     className="text-center mb-16"
                 >
                     <span className="text-secondary font-mono tracking-widest text-sm mb-2 block">LIVE DEMO</span>
-                    <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-gray-500 mb-4 inline-block">データの取得〜見える化</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-gray-500 mb-4 inline-block">データの見える化ダッシュボード</h2>
                     <p className="text-gray-400 max-w-3xl mx-auto">
-                        NC旋盤やマシニングセンタなど、設備の通信ポートからデータを引っ張り出し、お手元のスマホやPCへリアルタイムに共有します。以下のボタンで疑似体験してください。
+                        マシニングセンタやNC旋盤の通信ポートから、主軸負荷やアラーム情報をリアルタイム取得。<br className="hidden md:block" />「今、機械が動いているか？ムリをしていないか？」をどこからでも数字とグラフで直感的に把握できます。
                     </p>
                 </motion.div>
 
-                {/* --- DEMO 1: Machine Data --- */}
+                {/* --- DEMO 1: Machining Data --- */}
                 <div className="bg-[#1a1a1a] rounded-2xl border border-gray-800 p-8 shadow-2xl relative overflow-hidden mb-24">
-                    {/* Top Control Bar */}
                     <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-gray-800 pb-6 relative z-10">
                         <div className="flex items-center gap-3">
-                            <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.6)] animate-pulse" />
-                            <span className="text-gray-400 font-mono text-sm tracking-widest">対象: 5号機 (NC旋盤)</span>
+                            <div className="w-3 h-3 rounded-full bg-[#10b981] shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse" />
+                            <span className="text-gray-400 font-mono text-sm tracking-widest">対象: 第1工場 MC-05</span>
                         </div>
 
                         <button
@@ -102,24 +162,23 @@ export default function Demo() {
                             disabled={isFetching}
                             className={`px-8 py-3 rounded-lg font-semibold flex items-center gap-2 transition-all duration-300 relative ${isFetching
                                     ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                                    : 'bg-primary hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] text-white group outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#1a1a1a]'
+                                    : 'bg-primary hover:bg-primary/80 hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] text-white group outline-none'
                                 }`}
                         >
                             {isFetching ? (
                                 <>
                                     <Loader2 className="w-5 h-5 animate-spin" />
-                                    工作機械からデータ抽出中...
+                                    コントローラーから取得中...
                                 </>
                             ) : (
                                 <>
                                     <DatabaseZap className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                                    機械の稼働データを見る
+                                    設備の稼働データを取得
                                 </>
                             )}
                         </button>
                     </div>
 
-                    {/* Visualization Area */}
                     <div className="min-h-[400px] flex flex-col items-center justify-center relative">
                         {!dataLoaded && !isFetching && (
                             <motion.div
@@ -128,7 +187,7 @@ export default function Demo() {
                                 className="text-gray-600 flex flex-col items-center gap-4 text-center p-8"
                             >
                                 <Activity className="w-16 h-16 opacity-20" />
-                                <p>上のボタンをクリックして<br />リアルタイムデータの取得をシミュレート</p>
+                                <p>ボタンをクリックしてNCプログラムの<br />負荷モニター取得をシミュレートします</p>
                             </motion.div>
                         )}
 
@@ -142,10 +201,10 @@ export default function Demo() {
                                     <div className="w-24 h-24 border-4 border-gray-800 rounded-full" />
                                     <div className="w-24 h-24 border-4 border-primary rounded-full absolute top-0 left-0 animate-spin border-t-transparent shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <Radio className="w-8 h-8 text-primary animate-pulse" />
+                                        <Gauge className="w-8 h-8 text-primary animate-pulse" />
                                     </div>
                                 </div>
-                                <div className="text-primary font-mono typing-animation">CONNECTING TO NC CONTROLLER...</div>
+                                <div className="text-primary font-mono typing-animation">CONNECTING TO FOCAS...</div>
                             </motion.div>
                         )}
 
@@ -159,42 +218,39 @@ export default function Demo() {
                                 >
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-4 relative z-10">
                                         <div className="bg-surface/80 p-6 rounded-xl border border-gray-700 relative group overflow-hidden">
+                                            <p className="text-gray-400 text-sm mb-1 flex items-center gap-2"><PlayCircle className="w-4 h-4 text-[#10b981]" /> 設備ステータス</p>
+                                            <h3 className="text-4xl font-bold font-mono text-[#10b981] mt-2">自動運転中</h3>
+                                        </div>
+
+                                        <div className="bg-surface/80 p-6 rounded-xl border border-gray-700 relative group overflow-hidden">
                                             <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors" />
                                             <div className="flex justify-between items-start">
                                                 <div>
-                                                    <p className="text-gray-400 text-sm mb-1 flex items-center gap-2"><Target className="w-4 h-4 text-primary" /> 現状の稼働率 (OEE)</p>
-                                                    <h3 className="text-4xl font-bold font-mono text-white">{animatedOee}<span className="text-xl text-gray-500 ml-1">%</span></h3>
+                                                    <p className="text-gray-400 text-sm mb-1 flex items-center gap-2"><Gauge className="w-4 h-4 text-primary" /> 瞬間 主軸負荷</p>
+                                                    <h3 className="text-4xl font-bold font-mono text-white flex items-baseline gap-2">
+                                                        {animatedLoad}
+                                                        <span className="text-xl text-gray-500">%</span>
+                                                    </h3>
                                                 </div>
-                                                <div className="p-2 bg-primary/20 rounded-lg"><Activity className="w-6 h-6 text-primary" /></div>
                                             </div>
 
-                                            {/* Interactive Popup Simulation */}
                                             <AnimatePresence>
                                                 {showTooltip && (
                                                     <motion.div
                                                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                                                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                        className="absolute right-0 top-0 -mt-12 -mr-4 bg-primary text-white text-xs px-3 py-1.5 rounded-md shadow-lg font-bold before:content-[''] before:absolute before:top-full before:left-1/2 before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-primary"
+                                                        className="absolute right-0 top-0 -mt-12 -mr-4 bg-orange-500 text-white text-xs px-3 py-1.5 rounded-md shadow-[0_0_15px_rgba(249,115,22,0.5)] font-bold before:content-[''] before:absolute before:top-full before:left-1/2 before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-orange-500"
                                                     >
-                                                        目標値を超えています!
+                                                        過負荷注意(80%越え)
                                                     </motion.div>
                                                 )}
                                             </AnimatePresence>
                                         </div>
 
                                         <div className="bg-surface/80 p-6 rounded-xl border border-gray-700 group hover:border-gray-500 transition-colors cursor-default">
-                                            <p className="text-gray-400 text-sm mb-1 flex items-center gap-2"><Thermometer className="w-4 h-4 text-orange-500" /> 主軸モーター温度</p>
+                                            <p className="text-gray-400 text-sm mb-1">現在の実加工時間 (本日)</p>
                                             <h3 className="text-4xl font-bold font-mono text-white flex items-baseline gap-2">
-                                                {animatedOee > 0 ? '63.5' : '--'}
-                                                <span className="text-xl text-gray-500">°C</span>
-                                            </h3>
-                                        </div>
-
-                                        <div className="bg-surface/80 p-6 rounded-xl border border-gray-700 group hover:border-gray-500 transition-colors cursor-default">
-                                            <p className="text-gray-400 text-sm mb-1">本日の切削完了数</p>
-                                            <h3 className="text-4xl font-bold font-mono text-white flex items-baseline gap-2">
-                                                {animatedOee > 0 ? (animatedOee * 12) : '--'}
-                                                <span className="text-xl text-gray-500">個</span>
+                                                {animatedLoad > 0 ? '4H 32M' : '--'}
                                             </h3>
                                         </div>
                                     </div>
@@ -203,60 +259,69 @@ export default function Demo() {
                                         <ResponsiveContainer width="100%" height="100%">
                                             <AreaChart data={data}>
                                                 <defs>
-                                                    <linearGradient id="colorRpm" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                                                    <linearGradient id="colorLoad" x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.4} />
                                                         <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                                                    </linearGradient>
-                                                    <linearGradient id="colorTemp2" x1="0" y1="0" x2="0" y2="1">
-                                                        <stop offset="5%" stopColor="#facc15" stopOpacity={0.3} />
-                                                        <stop offset="95%" stopColor="#facc15" stopOpacity={0} />
                                                     </linearGradient>
                                                 </defs>
                                                 <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
                                                 <XAxis dataKey="time" stroke="#666" tick={{ fill: '#666' }} tickLine={false} axisLine={false} />
-                                                <YAxis yAxisId="left" stroke="#3b82f6" tick={{ fill: '#3b82f6' }} tickLine={false} axisLine={false} />
-                                                <YAxis yAxisId="right" orientation="right" stroke="#facc15" tick={{ fill: '#facc15' }} tickLine={false} axisLine={false} />
+                                                <YAxis stroke="#666" tick={{ fill: '#666' }} tickLine={false} axisLine={false} domain={[0, 150]} />
                                                 <ChartTooltip
                                                     contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '8px', color: '#fff' }}
                                                     itemStyle={{ color: '#fff' }}
+                                                    formatter={(value, name) => [value + '%', name]}
                                                 />
-                                                <Area yAxisId="left" type="monotone" name="主軸回転数 (rpm)" dataKey="主軸回転数" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorRpm)" animationDuration={2000} />
-                                                <Area yAxisId="right" type="monotone" name="主軸温度 (°C)" dataKey="主軸温度" stroke="#facc15" strokeWidth={2} fillOpacity={1} fill="url(#colorTemp2)" animationDuration={2500} />
+                                                <Area type="monotone" name="主軸負荷" dataKey="主軸負荷" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorLoad)" animationDuration={2000} />
+                                                {/* Reference Line for overload simulation */}
+                                                <Line type="step" dataKey={() => 100} stroke="#ef4444" strokeWidth={1} strokeDasharray="5 5" activeDot={false} isAnimationActive={false} />
                                             </AreaChart>
                                         </ResponsiveContainer>
                                     </div>
+                                    <div className="text-right mt-2 text-xs text-red-500/80">※ 赤点線は100%負荷のアラート閾値</div>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
                 </div>
 
-                {/* --- DEMO 2: Web App Examples --- */}
+                {/* --- DEMO 2: Rich Web App Examples --- */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     className="mt-32"
                 >
-                    <div className="text-center mb-12">
-                        <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">WEBアプリで実現できること</h3>
-                        <p className="text-gray-400">データを見せるだけでなく、現場の「困った」を解決する様々なカスタムアプリをゼロから作ります。</p>
+                    <div className="text-center mb-16">
+                        <span className="text-accent font-mono tracking-widest text-sm mb-2 block">APPLICATION MOCKUPS</span>
+                        <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">WEBアプリのカスタム実装例</h3>
+                        <p className="text-gray-400">データを見せるだけでなく、現場の「困った」を解決する多種多様なアプリを構築します。<br className="hidden md:block" />カードにマウスを重ねて（タップして）イメージをご確認ください。</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {webAppExamples.map((app, idx) => (
                             <motion.div
                                 key={idx}
-                                whileHover={{ scale: 1.02 }}
-                                className="bg-surface border border-gray-700 p-6 rounded-2xl flex gap-6 items-start group hover:bg-gray-800 transition-all cursor-crosshair relative overflow-hidden"
+                                whileHover={{ y: -5 }}
+                                className="bg-surface border border-gray-800 rounded-2xl relative group overflow-hidden h-[300px] flex flex-col cursor-pointer shadow-lg"
                             >
-                                <div className="absolute -inset-2 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
-                                <div className="p-4 bg-gray-900 rounded-xl group-hover:bg-black transition-colors ring-1 ring-gray-700 relative z-10">
-                                    {app.icon}
-                                </div>
-                                <div className="relative z-10">
-                                    <h4 className="text-lg font-bold text-gray-100 mb-2 group-hover:text-white">{app.title}</h4>
+                                {/* Default View (Icon + Text) */}
+                                <div className="p-8 flex flex-col items-center justify-center text-center h-full group-hover:opacity-0 transition-opacity duration-300 relative z-10">
+                                    <div className="p-4 bg-gray-900 rounded-2xl ring-1 ring-gray-700 mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                                        {app.icon}
+                                    </div>
+                                    <h4 className="text-lg font-bold text-gray-100 mb-3">{app.title}</h4>
                                     <p className="text-gray-400 text-sm leading-relaxed">{app.desc}</p>
+                                </div>
+
+                                {/* Hover Reveal View (Mockup UI) */}
+                                <div className="absolute inset-0 bg-[#141414] p-6 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] z-20 flex flex-col justify-between border-t border-primary/30">
+                                    <div className="mb-4 text-white font-bold text-sm flex items-center gap-2">
+                                        {app.icon} {app.title}
+                                    </div>
+                                    <div className="flex-grow bg-background rounded-xl p-4 ring-1 ring-gray-800 overflow-hidden shadow-inner">
+                                        {app.mockup}
+                                    </div>
                                 </div>
                             </motion.div>
                         ))}
